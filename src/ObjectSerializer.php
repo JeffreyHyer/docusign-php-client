@@ -275,7 +275,7 @@ class ObjectSerializer
             }
 
             return $deserialized;
-        } else {
+        } elseif (class_exists($class)) {
             // If a discriminator is defined and points to a valid subclass, use it.
             if (in_array($class, ['Number', 'Date'])) {
                 $class = '\DocuSign\eSign\Model\\' . $class;
@@ -301,6 +301,13 @@ class ObjectSerializer
                 }
             }
             return $instance;
+        } else {
+            return null;
+            
+            // throw new ApiException(
+            //     "Invalid form field type " . $class . " found.",
+            //     400
+            // );
         }
     }
 }
